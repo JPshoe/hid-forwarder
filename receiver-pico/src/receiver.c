@@ -17,9 +17,9 @@
 #include "lwip/udp.h"
 #endif
 
-#if (defined(NETWORK_ENABLED) || defined(BLUETOOTH_ENABLED))
+// #if (defined(NETWORK_ENABLED) || defined(BLUETOOTH_ENABLED)) //1
 #include "pico/cyw43_arch.h"
-#endif
+// #endif
 
 #include "receiver.h"
 
@@ -359,9 +359,9 @@ int main(void) {
         our_descriptor_number = 0;
     }
     serial_init();
-#if (defined(NETWORK_ENABLED) || defined(BLUETOOTH_ENABLED))
+// #if (defined(NETWORK_ENABLED) || defined(BLUETOOTH_ENABLED)) //2
     cyw43_arch_init();
-#endif
+// #endif
 #ifdef NETWORK_ENABLED
     net_init();
 #endif
@@ -374,15 +374,15 @@ int main(void) {
 
     while (true) {
         tud_task();
-#if (defined(NETWORK_ENABLED) || defined(BLUETOOTH_ENABLED))
+// #if (defined(NETWORK_ENABLED) || defined(BLUETOOTH_ENABLED)) //3
         cyw43_arch_poll();
-#endif
+// #endif
 #ifdef NETWORK_ENABLED
         net_task();
 #endif
-#if (defined(NETWORK_ENABLED) || defined(BLUETOOTH_ENABLED))
+// #if (defined(NETWORK_ENABLED) || defined(BLUETOOTH_ENABLED)) //4
         bool led_on = false;
-#endif
+// #endif
 #ifdef NETWORK_ENABLED
         led_on = led_on || wifi_connected;
 #endif
@@ -392,9 +392,9 @@ int main(void) {
             led_on = (time_us_32() % 300000) > 150000;
         }
 #endif
-#if (defined(NETWORK_ENABLED) || defined(BLUETOOTH_ENABLED))
-        cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, led_on);
-#endif
+// #if (defined(NETWORK_ENABLED) || defined(BLUETOOTH_ENABLED)) //5
+        // cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, led_on);
+// #endif
         serial_task();
         if ((or_items > 0) && (tud_hid_n_ready(0))) {
             tud_hid_n_report(0, outgoing_reports[or_head].report_id, outgoing_reports[or_head].data, outgoing_reports[or_head].len);
